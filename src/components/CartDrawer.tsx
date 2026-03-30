@@ -10,10 +10,9 @@ export default function CartDrawer() {
   const removeFromCart = useCartStore((s) => s.removeFromCart);
   const clearCart = useCartStore((s) => s.clearCart);
   const getTotalPrice = useCartStore((s) => s.getTotalPrice);
-  const getTotalItems = useCartStore((s) => s.getTotalItems);
 
   const totalPrice = getTotalPrice();
-  const totalItems = getTotalItems();
+  const totalItems = items.length;
 
   return (
     <CustomDrawer

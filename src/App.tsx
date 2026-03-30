@@ -60,7 +60,7 @@ function useUrlState() {
 // ─── App ─────────────────────────────────────────────────────────────────────
 function App() {
   const { page, category, search } = useUrlState();
-  const totalCartItems = useCartStore((s) => s.getTotalItems());
+  const totalCartItems = useCartStore((s) => s.items.length);
   const toggleCart = useCartStore((s) => s.toggleCart);
 
   // Local input state — we debounce this before writing to URL
