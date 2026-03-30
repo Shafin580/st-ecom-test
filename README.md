@@ -29,8 +29,8 @@ When you are done, please provide:
 ## Getting Started
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 Good luck and build something great!
