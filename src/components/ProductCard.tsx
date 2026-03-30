@@ -5,6 +5,7 @@ export default function ProductCard({
   name,
   price,
   category,
+  description,
   imageUrl,
 }: Product) {
   return (
@@ -20,6 +21,12 @@ export default function ProductCard({
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
+        {/* Hover Tooltip Overlay */}
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4 pointer-events-none">
+          <p className="text-white text-sm text-center line-clamp-6 drop-shadow-md">
+            {description}
+          </p>
+        </div>
       </div>
 
       {/* Content Container: Left-aligned, no borders */}

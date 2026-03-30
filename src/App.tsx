@@ -93,7 +93,6 @@ function App() {
         category: category || undefined,
         search: search || undefined,
       }),
-    placeholderData: (prev) => prev, // keep previous data while refetching
   });
 
   // Show toast on error
