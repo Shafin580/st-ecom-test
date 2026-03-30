@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Search, RefreshCw, PackageX } from 'lucide-react';
+import { Search, RefreshCw, PackageX, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { api } from './services/api';
 import { useDebounce } from './hooks/useDebounce';
+import { useCartStore } from './store/useCartStore';
 import ProductCard from './components/ProductCard';
 import ProductSkeleton from './components/ProductSkeleton';
 import Pagination from './components/Pagination';
+import CartDrawer from './components/CartDrawer';
 
 const CATEGORIES = ['Electronics', 'Clothing', 'Home', 'Outdoors'];
 const ITEMS_PER_PAGE = 12;
@@ -58,6 +60,8 @@ function useUrlState() {
 // ─── App ─────────────────────────────────────────────────────────────────────
 function App() {
   const { page, category, search } = useUrlState();
+  const totalCartItems = useCartStore((s) => s.getTotalItems());
+  const toggleCart = useCartStore((s) => s.toggleCart);
 
   // Local input state — we debounce this before writing to URL
   const [searchInput, setSearchInput] = useState(search);
@@ -142,15 +146,33 @@ function App() {
             </p>
           </div>
 
-          {/* Subtle refetch indicator */}
-          {isFetching && !isLoading && (
-            <RefreshCw
-              size={18}
-              className="animate-spin"
-              style={{ color: 'var(--text-muted)' }}
-              aria-label="Refreshing data"
-            />
-          )}
+          <div className="flex items-center gap-3">
+            {/* Subtle refetch indicator */}
+            {isFetching && !isLoading && (
+              <RefreshCw
+                size={18}
+                className="animate-spin"
+                style={{ color: 'var(--text-muted)' }}
+                aria-label="Refreshing data"
+              />
+            )}
+
+            {/* Cart button — only visible when items are in cart */}
+            {totalCartItems > 0 && (
+              <button
+                onClick={toggleCart}
+                className="relative inline-flex items-center justify-center w-10 h-10 rounded-xl
+                           hover:bg-slate-100 transition-colors"
+                aria-label="Open cart"
+              >
+                <ShoppingCart size={20} className="text-slate-600" />
+                <span className="absolute -top-1 -right-1 bg-[#2A75FF] text-white text-[10px] font-bold
+                                 w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+                  {totalCartItems}
+                </span>
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
@@ -240,6 +262,9 @@ function App() {
           />
         )}
       </main>
+
+      {/* ── Cart Drawer ────────────────────────────────────────────────────── */}
+      <CartDrawer />
     </div>
   );
 }
